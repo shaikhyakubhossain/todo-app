@@ -1,4 +1,5 @@
 import "./globals.css";
+import Nav from "@/components/Nav/nav.component";
 
 export default function RootLayout({
   children,
@@ -8,6 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Nav />
         {children}
       </body>
     </html>

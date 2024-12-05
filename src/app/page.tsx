@@ -1,9 +1,9 @@
-import Nav from "@/components/Nav/nav.component";
+import Dashboard from "@/components/Dashboard/dashboard.component"; 
 
 export default function Home() {
   return (
     <div>
-      <Nav />
+      <Dashboard />
     </div>
   );
 }
