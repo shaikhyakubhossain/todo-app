@@ -35,10 +35,13 @@ export default function Dashboard() {
   }
 
   const removeOrCreateDrag = (event: React.MouseEvent<HTMLDivElement>) => {
-    const draggableArea = (event.currentTarget as HTMLDivElement);
-    draggableArea.appendChild(createDraggableElem(event.clientX, event.clientY));
-    
-    setCurrentDragElement(null)
+    if(!currentDragElement){
+      const draggableArea = (event.currentTarget as HTMLDivElement);
+      draggableArea.appendChild(createDraggableElem(event.clientX, event.clientY));
+    }
+    else{
+      setCurrentDragElement(null)
+    }
   }
  
   return (
