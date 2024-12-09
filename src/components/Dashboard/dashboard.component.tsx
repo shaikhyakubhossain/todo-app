@@ -22,16 +22,18 @@ export default function Dashboard() {
   };
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
-    if((event.target as HTMLDivElement).parentElement?.id === "draggableArea") {
-        setCurrentTask(event.target as HTMLDivElement);
+    if((event.target as HTMLDivElement).classList.contains(styles.titleBar)) {
+        event.currentTarget.style.userSelect = "none";
+        setCurrentTask((event.target as HTMLDivElement).parentElement);
     }
   };
 
   const stopDraggingOrCreateTask = (event: React.MouseEvent<HTMLDivElement>) => {
-    if(!currentTask){
+    if(!currentTask && event.target === document.getElementById("draggableArea")){
       setTasks([...tasks, {positionLeft: event.clientX, positionTop:event.clientY, textContent: "new task"}])
     }
     else{
+      event.currentTarget.style.userSelect = "auto";
       setCurrentTask(null)
     }
   }
