@@ -10,7 +10,7 @@ type propsType = {
 
 export default function Task(props: propsType) {
     return (
-        <div id={"taskId-" + props.taskId} className="absolute w-36 h-36 bg-pink-500 rounded shadow-lg" style={{top: props.positionTop + "px", left: props.positionLeft + "px"}}>
+        <div id={"taskId-" + props.taskId} className="absolute w-36 h-36 bg-pink-500 rounded shadow-lg" style={{top: (props.positionTop - 10) + "px", left: (props.positionLeft - 10) + "px"}}>
             <div className={`${styles.titleBar} draggable flex justify-between items-center w-full h-5 px-1 bg-green-500 rounded`}>
                 <div></div>
                 <div className={``}></div>
