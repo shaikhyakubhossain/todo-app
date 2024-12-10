@@ -22,11 +22,11 @@ export default function Dashboard() {
   };
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
-    if((event.target as HTMLDivElement).classList.contains(styles.titleBar)) {
+    if((event.target as HTMLDivElement).classList.contains("draggable")){
         event.currentTarget.style.userSelect = "none";
         setCurrentTask((event.target as HTMLDivElement).parentElement);
-    }
   };
+}
 
   const stopDraggingOrCreateTask = (event: React.MouseEvent<HTMLDivElement>) => {
     if(!currentTask && event.target === document.getElementById("draggableArea")){
@@ -36,6 +36,11 @@ export default function Dashboard() {
       event.currentTarget.style.userSelect = "auto";
       setCurrentTask(null)
     }
+  }
+
+  const handleDelete = (event: React.MouseEvent<HTMLDivElement>) => {
+    const taskIdToRemove = Number(event.currentTarget.parentElement?.parentElement?.id.split("-")[1]);
+    setTasks(tasks.filter((_, index) => index !== taskIdToRemove))
   }
  
   return (
@@ -48,7 +53,7 @@ export default function Dashboard() {
     >
       {
         tasks.map((item, index) => {
-          return <Task key={index} positionTop={item.positionTop} positionLeft={item.positionLeft} textContent={item.textContent} />
+          return <Task taskId={index} key={index} positionTop={item.positionTop} positionLeft={item.positionLeft} textContent={item.textContent} handleDelete={handleDelete} />
       })
       }
     </div>
