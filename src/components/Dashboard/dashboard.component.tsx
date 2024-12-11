@@ -9,22 +9,36 @@ type taskType = {
   textContent: string;
 }
 
+type positionType = {
+  x: number;
+  y: number;
+}
+
+type currentTaskType = {
+  elem: HTMLElement;
+  selectPosition: positionType
+}
+
 export default function Dashboard() {
 
-  const [currentTask, setCurrentTask] = useState<HTMLElement | null>(null);
+  const [currentTask, setCurrentTask] = useState<currentTaskType | null>(null);
   const [tasks, setTasks] = useState<taskType[]>([]);
 
   const dragging = (event: React.MouseEvent<HTMLDivElement>) => {
     if (currentTask) {
-      currentTask.style.left = `${event.clientX}px`;
-      currentTask.style.top = `${event.clientY}px`;
+      currentTask.elem.style.left = `${event.clientX - currentTask.selectPosition.x}px`;
+      currentTask.elem.style.top = `${event.clientY - currentTask.selectPosition.y}px`;
     }
   };
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
     if((event.target as HTMLDivElement).classList.contains("draggable")){
+      const elemPos = (event.target as HTMLDivElement).getBoundingClientRect();
         event.currentTarget.style.userSelect = "none";
-        setCurrentTask((event.target as HTMLDivElement).parentElement);
+        setCurrentTask({
+          elem: ((event.target as HTMLDivElement).parentElement as HTMLDivElement),
+          selectPosition: { x: event.clientX - elemPos.x , y: event.clientY - elemPos.y }
+        });
   };
 }
 
