@@ -46,7 +46,7 @@ export default function Dashboard() {
   return (
     <div
       id={"draggableArea"}
-      className={`${styles.mainContainer} bg-yellow-600 h-screen`}
+      className={`${styles.mainContainer} bg-[#423E37] h-[calc(100dvh-56px)]`}
       onMouseDown={selectTask}
       onMouseUp={stopDraggingOrCreateTask}
       onMouseMove={dragging}

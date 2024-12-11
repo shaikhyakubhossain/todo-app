@@ -1,4 +1,11 @@
-.taskBody > input {
-    display: block;
-    padding: 2px;
+.taskBody {
+
+    input, textarea {
+        display: block;
+        padding: 2px;
+        border-radius: 4px;
+        background: #6E675F;
+    }
+
+
 }
