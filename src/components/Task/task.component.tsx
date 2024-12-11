@@ -16,8 +16,10 @@ export default function Task(props: propsType) {
                 <div className={``}></div>
                 <div className="w-3 h-3 rounded-full bg-red-500" onClick={props.handleDelete}></div>
             </div>
-            <div>Title</div>
-            <div>{props.textContent}</div>
+            <div className={`${styles.taskBody} flex flex-col h-[calc(100%-20px)] p-1`}>
+                <input className="mb-1" type="text" placeholder="Title" />
+                <input className=" flex-grow" placeholder="Task" />
+            </div>
         </div>
     )
 }
