@@ -36,9 +36,7 @@ export default function Dashboard() {
     }
   };
 
-  const stopDraggingOrCreateTask = (
-    event: React.MouseEvent<HTMLDivElement>
-  ) => {
+  const stopDraggingOrCreateTask = (event: React.MouseEvent<HTMLDivElement>) => {
     if (
       !currentTaskToDrag &&
       event.target === draggableAreaRef.current
@@ -46,15 +44,22 @@ export default function Dashboard() {
       setTasks([
         ...tasks,
         {
-          positionLeft: event.clientX,
-          positionTop: event.clientY,
+          positionLeft: event.clientX - 10,
+          positionTop: event.clientY - 10,
           width: 200,
           height: 200,
           textContent: "new task",
         },
       ]);
-    } else {
+    } else if((event.target as HTMLDivElement).classList.contains("draggable")) {
       event.currentTarget.style.userSelect = "auto";
+      const taskIdToChangePos = Number(currentTaskToDrag?.elem.id.split("-")[1]);
+      setTasks((prev) => {
+        const newArr = prev;
+        newArr[taskIdToChangePos].positionLeft = Number(currentTaskToDrag?.elem.style.left.split("px")[0]);
+        newArr[taskIdToChangePos].positionTop = Number(currentTaskToDrag?.elem.style.top.split("px")[0]);
+        return newArr
+      })
       setCurrentTaskToDrag(null);
     }
   };
@@ -67,12 +72,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    // if (currentTaskToResize) {
-    //   previousMousePosition = {x: (event as MouseEvent).clientX, y: draggableAreaRef.current.y};
-    //   draggableAreaRef.current = { x: window.event.clientX, y: window.event.clientY };
-    // }
     window.addEventListener("mousemove", handleResizing);
-
     return () => {
       window.removeEventListener("mousemove", handleResizing);
     }

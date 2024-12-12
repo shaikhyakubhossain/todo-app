@@ -14,7 +14,7 @@ type propsType = {
 
 export default function Task(props: propsType) {
     return (
-        <div id={"taskId-" + props.taskId} className="absolute bg-[#EDEBD7] rounded shadow-lg" style={{width: props.width + "px", height: props.height + "px", top: (props.positionTop - 10) + "px", left: (props.positionLeft - 10) + "px"}}>
+        <div id={"taskId-" + props.taskId} className="absolute bg-[#EDEBD7] rounded shadow-lg" style={{width: props.width + "px", height: props.height + "px", top: props.positionTop + "px", left: props.positionLeft + "px"}}>
             <div className={`${styles.titleBar} draggable flex justify-between items-center w-full h-5 px-1 bg-[#A39594] rounded cursor-grab active:cursor-grabbing`}>
                 <div></div>
                 <div className="w-3 h-3 rounded-full bg-red-700 cursor-pointer hover:bg-red-500 hover:cursor-pointer hover:shadow-2xl shadow-red-500" onClick={props.handleDelete}></div>
