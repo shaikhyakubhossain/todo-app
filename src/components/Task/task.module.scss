@@ -1,11 +1,11 @@
 .taskBody {
-
     input, textarea {
         display: block;
         padding: 2px;
         border-radius: 4px;
         background: #6E675F;
     }
-
-
+    input::placeholder, textarea::placeholder {
+        color: white;
+    }
 }

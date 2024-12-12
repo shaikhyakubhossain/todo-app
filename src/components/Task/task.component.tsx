@@ -1,25 +1,29 @@
 import styles from "./task.module.scss";
 
 type propsType = {
-    taskId: number
-    positionTop: number,
-    positionLeft: number
-    textContent: string
-    handleDelete: (event: React.MouseEvent<HTMLDivElement>) => void
+    taskId: number;
+    positionTop: number;
+    positionLeft: number;
+    textContent: string;
+    width: number;
+    height: number;
+    handleDelete: (event: React.MouseEvent<HTMLDivElement>) => void;
+    handleClickResize: (event: React.MouseEvent<HTMLDivElement>) => void;
+    handleReleaseResize: () => void;
 }
 
 export default function Task(props: propsType) {
     return (
-        <div id={"taskId-" + props.taskId} className="absolute w-36 h-36 bg-[#EDEBD7] rounded shadow-lg" style={{top: (props.positionTop - 10) + "px", left: (props.positionLeft - 10) + "px"}}>
-            <div className={`${styles.titleBar} draggable flex justify-between items-center w-full h-5 px-1 bg-[#A39594] rounded`}>
+        <div id={"taskId-" + props.taskId} className="absolute bg-[#EDEBD7] rounded shadow-lg" style={{width: props.width + "px", height: props.height + "px", top: (props.positionTop - 10) + "px", left: (props.positionLeft - 10) + "px"}}>
+            <div className={`${styles.titleBar} draggable flex justify-between items-center w-full h-5 px-1 bg-[#A39594] rounded cursor-grab active:cursor-grabbing`}>
                 <div></div>
-                <div className={``}></div>
-                <div className="w-3 h-3 rounded-full bg-red-500" onClick={props.handleDelete}></div>
+                <div className="w-3 h-3 rounded-full bg-red-700 cursor-pointer hover:bg-red-500 hover:cursor-pointer hover:shadow-2xl shadow-red-500" onClick={props.handleDelete}></div>
             </div>
             <div className={`${styles.taskBody} flex flex-col h-[calc(100%-20px)] p-1 text-white`}>
                 <input className="mb-1" type="text" placeholder="Title" />
                 <textarea className=" flex-grow" placeholder="Task" />
             </div>
+            <div onMouseDown={props.handleClickResize} onMouseUp={props.handleReleaseResize} className="absolute bottom-0 right-0 w-2 h-2 rounded-full cursor-nwse-resize"></div>
         </div>
     )
 }
