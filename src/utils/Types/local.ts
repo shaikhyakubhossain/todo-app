@@ -3,7 +3,8 @@ export type taskType = {
   positionTop: number;
   width: number;
   height: number;
-  textContent: string;
+  title: string;
+  taskBody: string;
 };
 
 export type currentTaskToDragType = {

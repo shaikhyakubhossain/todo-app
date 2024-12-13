@@ -48,7 +48,8 @@ export default function Dashboard() {
           positionTop: event.clientY - 10,
           width: 200,
           height: 200,
-          textContent: "new task",
+          title: "",
+          taskBody: "",
         },
       ]);
     } else if((event.target as HTMLDivElement).classList.contains("draggable")) {
@@ -63,6 +64,23 @@ export default function Dashboard() {
       setCurrentTaskToDrag(null);
     }
   };
+
+  const updateTitle = (taskId: number, title: string) => {
+    setTasks((prev) => {
+      const newArr = prev;
+      newArr[taskId].title = title;
+      return newArr
+    })
+  }
+
+  const updateTaskBody = (taskId: number, taskBody: string) => {
+    setTasks((prev) => {
+      const newArr = prev;
+      newArr[taskId].taskBody = taskBody;
+      return newArr
+    })
+    console.log(tasks)
+  }
 
   const handleDelete = (event: React.MouseEvent<HTMLDivElement>) => {
     const taskIdToRemove = Number(
@@ -108,7 +126,8 @@ export default function Dashboard() {
       onMouseUp={stopDraggingOrCreateTask}
       onMouseMove={(event) => currentTaskToDrag && dragging(event)}
     >
-      {tasks.map((item, index) => {
+      { tasks.length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold !bg-[#423E37] text-[#918879] text-center">No tasks<br />Click anywhere to add one</div> }
+      { tasks.map((item, index) => {
         return (
           <Task
             taskId={index}
@@ -117,10 +136,12 @@ export default function Dashboard() {
             positionLeft={item.positionLeft}
             width={item.width}
             height={item.height}
-            textContent={item.textContent}
+            // textContent={item.textContent}
             handleDelete={handleDelete}
             handleClickResize={handleClickResize}
             handleReleaseResize={handleReleaseResize}
+            handleUpdateTitle={updateTitle}
+            handleUpdateTaskBody={updateTaskBody}
           />
         );
       })}
