@@ -1,4 +1,5 @@
 export type taskType = {
+  id: number;
   positionLeft: number;
   positionTop: number;
   width: number;

@@ -44,6 +44,7 @@ export default function Dashboard() {
       setTasks([
         ...tasks,
         {
+          id: tasks.length + 1,
           positionLeft: event.clientX - 10,
           positionTop: event.clientY - 10,
           width: 200,
@@ -82,11 +83,8 @@ export default function Dashboard() {
     console.log(tasks)
   }
 
-  const handleDelete = (event: React.MouseEvent<HTMLDivElement>) => {
-    const taskIdToRemove = Number(
-      event.currentTarget.parentElement?.parentElement?.id.split("-")[1]
-    );
-    setTasks(tasks.filter((_, index) => index !== taskIdToRemove));
+  const handleDelete = (id: number) => {
+    setTasks(tasks.filter((item) => item.id !== id));
   };
 
   useEffect(() => {
@@ -131,13 +129,13 @@ export default function Dashboard() {
         return (
           <Task
             taskId={index}
-            key={index}
+            key={item.id}
             positionTop={item.positionTop}
             positionLeft={item.positionLeft}
             width={item.width}
             height={item.height}
             // textContent={item.textContent}
-            handleDelete={handleDelete}
+            handleDelete={() => handleDelete(item.id)}
             handleClickResize={handleClickResize}
             handleReleaseResize={handleReleaseResize}
             handleUpdateTitle={updateTitle}
