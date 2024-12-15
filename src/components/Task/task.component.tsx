@@ -6,7 +6,7 @@ type propsType = {
     positionLeft: number;
     width: number;
     height: number;
-    handleDelete: (event: React.MouseEvent<HTMLDivElement>) => void;
+    handleDelete: () => void;
     handleClickResize: (event: React.MouseEvent<HTMLDivElement>) => void;
     handleReleaseResize: () => void;
     handleUpdateTitle: (taskId: number, title: string) => void;

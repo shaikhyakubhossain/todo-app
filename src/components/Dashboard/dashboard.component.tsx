@@ -24,6 +24,7 @@ export default function Dashboard() {
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
     if ((event.target as HTMLDivElement).classList.contains("draggable")) {
+      console.log((event.target as HTMLDivElement).parentElement as HTMLDivElement);
       const elemPos = (event.target as HTMLDivElement).getBoundingClientRect();
       event.currentTarget.style.userSelect = "none";
       setCurrentTaskToDrag({
@@ -44,7 +45,7 @@ export default function Dashboard() {
       setTasks([
         ...tasks,
         {
-          id: tasks.length + 1,
+          id: tasks.length === 0 ? 1 : tasks[tasks.length - 1].id + 1,
           positionLeft: event.clientX - 10,
           positionTop: event.clientY - 10,
           width: 200,
@@ -58,8 +59,12 @@ export default function Dashboard() {
       const taskIdToChangePos = Number(currentTaskToDrag?.elem.id.split("-")[1]);
       setTasks((prev) => {
         const newArr = prev;
-        newArr[taskIdToChangePos].positionLeft = Number(currentTaskToDrag?.elem.style.left.split("px")[0]);
-        newArr[taskIdToChangePos].positionTop = Number(currentTaskToDrag?.elem.style.top.split("px")[0]);
+        newArr.forEach((item) => {
+          if(item.id === taskIdToChangePos) {
+            item.positionLeft = Number(currentTaskToDrag?.elem.style.left.split("px")[0]);
+            item.positionTop = Number(currentTaskToDrag?.elem.style.top.split("px")[0]);
+          }
+        })
         return newArr
       })
       setCurrentTaskToDrag(null);
@@ -84,6 +89,8 @@ export default function Dashboard() {
   }
 
   const handleDelete = (id: number) => {
+    const newArr  = tasks.filter((item) => item.id !== id);
+    console.log(id, newArr)
     setTasks(tasks.filter((item) => item.id !== id));
   };
 
@@ -109,8 +116,12 @@ export default function Dashboard() {
     const taskIdToResize = Number(currentTaskToResize?.id.split("-")[1]);
     setTasks((prev) => {
       const newArr = prev;
-      newArr[taskIdToResize].width = Number(currentTaskToResize?.style.width.split("px")[0]);
-      newArr[taskIdToResize].height = Number(currentTaskToResize?.style.height.split("px")[0]);
+      newArr.forEach((item) => {
+        if(item.id === taskIdToResize) {
+          item.width = Number(currentTaskToResize?.style.width.split("px")[0]);
+          item.height = Number(currentTaskToResize?.style.height.split("px")[0]);
+        }
+      })
       return newArr
     });
     setCurrentTaskToResize(null);
@@ -128,13 +139,12 @@ export default function Dashboard() {
       { tasks.map((item, index) => {
         return (
           <Task
-            taskId={index}
-            key={item.id}
+            taskId={item.id}
+            key={index}
             positionTop={item.positionTop}
             positionLeft={item.positionLeft}
             width={item.width}
             height={item.height}
-            // textContent={item.textContent}
             handleDelete={() => handleDelete(item.id)}
             handleClickResize={handleClickResize}
             handleReleaseResize={handleReleaseResize}
