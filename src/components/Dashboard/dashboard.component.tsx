@@ -74,7 +74,11 @@ export default function Dashboard() {
   const updateTitle = (taskId: number, title: string) => {
     setTasks((prev) => {
       const newArr = prev;
-      newArr[taskId].title = title;
+      newArr.forEach((item) => {
+        if(item.id === taskId) {
+          item.title = title;
+        }
+      })
       return newArr
     })
   }
@@ -82,7 +86,11 @@ export default function Dashboard() {
   const updateTaskBody = (taskId: number, taskBody: string) => {
     setTasks((prev) => {
       const newArr = prev;
-      newArr[taskId].taskBody = taskBody;
+      newArr.forEach((item) => {
+        if(item.id === taskId) {
+          item.taskBody = taskBody;
+        }
+      })
       return newArr
     })
     console.log(tasks)
