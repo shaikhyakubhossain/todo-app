@@ -24,7 +24,7 @@ export default function Dashboard() {
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
     if ((event.target as HTMLDivElement).classList.contains("draggable")) {
-      console.log((event.target as HTMLDivElement).parentElement as HTMLDivElement);
+      // console.log((event.target as HTMLDivElement).parentElement as HTMLDivElement);
       const elemPos = (event.target as HTMLDivElement).getBoundingClientRect();
       event.currentTarget.style.userSelect = "none";
       setCurrentTaskToDrag({
@@ -93,12 +93,10 @@ export default function Dashboard() {
       })
       return newArr
     })
-    console.log(tasks)
+    // console.log(tasks)
   }
 
   const handleDelete = (id: number) => {
-    const newArr  = tasks.filter((item) => item.id !== id);
-    console.log(id, newArr)
     setTasks(tasks.filter((item) => item.id !== id));
   };
 
