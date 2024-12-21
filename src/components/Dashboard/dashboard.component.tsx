@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import styles from "./dashboard.module.scss";
-import Task from "../Task/task.component";
+import Task from "./Task/task.component";
 import type { taskType, currentTaskToDragType } from "../../utils/Types/local";
 
 export default function Dashboard() {
@@ -107,6 +107,10 @@ export default function Dashboard() {
     }
   }, [currentTaskToResize]);
 
+  useEffect(() => {
+    console.log(tasks)
+  }, [tasks]);
+
   const handleClickResize = (event: React.MouseEvent<HTMLDivElement>) => {
     setCurrentTaskToResize((event.currentTarget as HTMLDivElement).parentElement as HTMLDivElement);
   };
@@ -142,11 +146,11 @@ export default function Dashboard() {
       onMouseMove={(event) => currentTaskToDrag && dragging(event)}
     >
       { tasks.length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold !bg-[#423E37] text-[#918879] text-center">No tasks<br />Click anywhere to add one</div> }
-      { tasks.map((item, index) => {
+      { tasks.map((item) => {
         return (
           <Task
             taskId={item.id}
-            key={index}
+            key={item.id}
             positionTop={item.positionTop}
             positionLeft={item.positionLeft}
             width={item.width}
@@ -154,6 +158,8 @@ export default function Dashboard() {
             handleDelete={() => handleDelete(item.id)}
             handleClickResize={handleClickResize}
             handleReleaseResize={handleReleaseResize}
+            title={item.title}
+            taskBody={item.taskBody}
             handleUpdateTitle={updateTitle}
             handleUpdateTaskBody={updateTaskBody}
           />
