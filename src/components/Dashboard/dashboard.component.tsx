@@ -149,8 +149,8 @@ export default function Dashboard() {
       { tasks.map((item) => {
         return (
           <Task
-            taskId={item.id}
             key={item.id}
+            taskId={item.id}
             positionTop={item.positionTop}
             positionLeft={item.positionLeft}
             width={item.width}
