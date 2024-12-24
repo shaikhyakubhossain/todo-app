@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
 import Button from "@/components/Button/button.component";
+import Input from "@/components/Input/input.component";
 
 export default function Signup() {
 
     const [authDetail, setAuthDetail] = useState({
         username: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
 
     const handleSignup = async () => {
@@ -24,9 +26,9 @@ export default function Signup() {
 
     return (
         <div className="text-center">
-            <input type="text" placeholder="Username" value={authDetail.username} onChange={(e) => setAuthDetail({ ...authDetail, username: e.target.value })} /><br/>
-            <input type="password" placeholder="Password" value={authDetail.password} onChange={(e) => setAuthDetail({ ...authDetail, password: e.target.value })} /><br/>
-            <input type="password" placeholder="Confirm Password" value={authDetail.password} onChange={(e) => setAuthDetail({ ...authDetail, password: e.target.value })} /><br/>
+            <Input type="text" placeholder="Username" handleUpdateOnChange={(e) => setAuthDetail({ ...authDetail, username: e.target.value })} /><br/>
+            <Input type="password" placeholder="Password" handleUpdateOnChange={(e) => setAuthDetail({ ...authDetail, password: e.target.value })} /><br/>
+            <Input type="password" placeholder="Confirm Password" handleUpdateOnChange={(e) => setAuthDetail({ ...authDetail, confirmPassword: e.target.value })} /><br/>
             <Button onClick={handleSignup}>Sign Up</Button>
         </div>
     );
