@@ -18,3 +18,8 @@ type positionType = {
   y: number;
 };
 
+export type authCredentialType = {
+    username: string;
+    password: string;
+};
+
