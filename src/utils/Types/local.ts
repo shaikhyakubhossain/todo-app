@@ -19,7 +19,13 @@ type positionType = {
 };
 
 export type authCredentialType = {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 };
 
+export type authComponentType = {
+  updateUsername: (username: string) => void;
+  updatePassword: (password: string) => void;
+  updateConfirmPassword?: (confirmPassword: string) => void;
+  submit: () => void;
+};

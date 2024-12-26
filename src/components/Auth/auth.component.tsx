@@ -5,7 +5,7 @@ import Login from "./Login/login.component";
 import { handleAuth } from "@/utils/Helper/auth";
 
 import { useDispatch } from "react-redux";
-import { setAuthDetail } from "../../../lib/features/AuthDetail/authDetailSlice";
+import { setAuthDetail } from "@/lib/features/AuthDetail/authDetailSlice";
 
 export default function Auth() {
 
@@ -16,10 +16,14 @@ export default function Auth() {
         confirmPassword: ""
     });
 
+    const dispatch = useDispatch();
+
     const handleSubmit = () => {
             if (authCredential.confirmPassword !== "" && authCredential.password !== authCredential.confirmPassword) return;
             const data = handleAuth(authCredential, authType);
-            console.log(data);
+            data.then((data) => {
+                dispatch(setAuthDetail({username: data.username, token: data.token}));
+            });
         }
 
     return (

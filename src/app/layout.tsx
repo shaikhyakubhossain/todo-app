@@ -1,5 +1,6 @@
 import "./globals.css";
 import Nav from "@/components/Nav/nav.component";
+import RTKStoreProvider from "@/components/RTKStoreProvider/rtk-store-provider.component";
 
 export default function RootLayout({
   children,
@@ -9,8 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Nav />
-        {children}
+        <RTKStoreProvider>
+          <Nav />
+          {children}
+        </RTKStoreProvider>
       </body>
     </html>
   );

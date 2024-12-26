@@ -8,9 +8,8 @@ export const handleAuth = async (authCredential: authCredentialType, type: strin
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(authCredential)
+        body: JSON.stringify({username: authCredential.username, password: authCredential.password})
     })
     const data = await response.json();
-    console.log(data);
-    return data
+    return await data
 }
