@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Signup from "./Signup/signup.component";
 import Login from "./Login/login.component";
 import { handleAuth } from "@/utils/Helper/auth";
 
-import { useDispatch } from "react-redux";
+import { RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
 import { setAuthDetail } from "@/lib/features/AuthDetail/authDetailSlice";
 
 export default function Auth() {
@@ -14,6 +15,7 @@ export default function Auth() {
     password: "",
     confirmPassword: "",
   });
+  const { token } = useSelector((state: RootState) => state.authDetail);
 
   const dispatch = useDispatch();
 
@@ -29,11 +31,18 @@ export default function Auth() {
     });
   };
 
+  useEffect(() => {
+    console.log(token);
+    if(token){
+      window.location.href = "/Dashboard";
+    }
+  }, [token]);
+
   return (
     <div>
       {authType === "login" ? (
         <Login
-          updateAuthType={(type) => setAuthType("signup")}
+          updateAuthType={() => setAuthType("signup")}
           updateUsername={(e) =>
             setAuthCredential({ ...authCredential, username: e })
           }
@@ -44,7 +53,7 @@ export default function Auth() {
         />
       ) : (
         <Signup
-          updateAuthType={(type) => setAuthType("login")}
+          updateAuthType={() => setAuthType("login")}
           updateUsername={(e) =>
             setAuthCredential({ ...authCredential, username: e })
           }
