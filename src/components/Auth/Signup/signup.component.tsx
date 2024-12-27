@@ -9,6 +9,7 @@ export default function Signup(props: authComponentType) {
             <Input type="password" placeholder="Password" handleUpdateOnChange={(e) => props.updatePassword(e.target.value)} /><br/>
             <Input type="password" placeholder="Confirm Password" handleUpdateOnChange={(e) => props.updateConfirmPassword && props.updateConfirmPassword(e.target.value)} /><br/>
             <Button onClick={props.submit}>Sign Up</Button>
+            <div className="text-white">Already have an account? <span onClick={() => props.updateAuthType("login")} className="text-green-600 hover:text-green-700 cursor-pointer">Login</span></div>
         </div>
     );
 }

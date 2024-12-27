@@ -24,6 +24,7 @@ export type authCredentialType = {
 };
 
 export type authComponentType = {
+  updateAuthType: (type: string) => void;
   updateUsername: (username: string) => void;
   updatePassword: (password: string) => void;
   updateConfirmPassword?: (confirmPassword: string) => void;

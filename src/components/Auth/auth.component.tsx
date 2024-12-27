@@ -8,29 +8,55 @@ import { useDispatch } from "react-redux";
 import { setAuthDetail } from "@/lib/features/AuthDetail/authDetailSlice";
 
 export default function Auth() {
+  const [authType, setAuthType] = useState("signup");
+  const [authCredential, setAuthCredential] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    const [authType, setAuthType] = useState("signup");
-    const [authCredential, setAuthCredential] = useState({
-        username: "",
-        password: "",
-        confirmPassword: ""
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    if (
+      authCredential.confirmPassword !== "" &&
+      authCredential.password !== authCredential.confirmPassword
+    )
+      return;
+    const data = handleAuth(authCredential, authType);
+    data.then((data) => {
+      dispatch(setAuthDetail({ username: data.username, token: data.token }));
     });
+  };
 
-    const dispatch = useDispatch();
-
-    const handleSubmit = () => {
-            if (authCredential.confirmPassword !== "" && authCredential.password !== authCredential.confirmPassword) return;
-            const data = handleAuth(authCredential, authType);
-            data.then((data) => {
-                dispatch(setAuthDetail({username: data.username, token: data.token}));
-            });
-        }
-
-    return (
-        <div>
-            {
-                authType === "login" ? <Login /> : <Signup updateUsername={(e) => setAuthCredential({...authCredential, username: e})} updatePassword={(e) => setAuthCredential({...authCredential, password: e})} updateConfirmPassword={(e) => setAuthCredential({...authCredential, confirmPassword: e})} submit={handleSubmit} />
-            }
-        </div>
-    )    
+  return (
+    <div>
+      {authType === "login" ? (
+        <Login
+          updateAuthType={(type) => setAuthType("signup")}
+          updateUsername={(e) =>
+            setAuthCredential({ ...authCredential, username: e })
+          }
+          updatePassword={(e) =>
+            setAuthCredential({ ...authCredential, password: e })
+          }
+          submit={handleSubmit}
+        />
+      ) : (
+        <Signup
+          updateAuthType={(type) => setAuthType("login")}
+          updateUsername={(e) =>
+            setAuthCredential({ ...authCredential, username: e })
+          }
+          updatePassword={(e) =>
+            setAuthCredential({ ...authCredential, password: e })
+          }
+          updateConfirmPassword={(e) =>
+            setAuthCredential({ ...authCredential, confirmPassword: e })
+          }
+          submit={handleSubmit}
+        />
+      )}
+    </div>
+  );
 }
