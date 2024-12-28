@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Signup from "./Signup/signup.component";
 import Login from "./Login/login.component";
+import Toast from "../Toast/toast.component";
 import { handleAuth } from "@/utils/Helper/auth";
 
 import { RootState } from "@/lib/store";
@@ -9,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuthDetail } from "@/lib/features/AuthDetail/authDetailSlice";
 
 export default function Auth() {
+  const [toast, setToast] = useState(true);
   const [authType, setAuthType] = useState("signup");
   const [authCredential, setAuthCredential] = useState({
     username: "",
@@ -16,6 +18,8 @@ export default function Auth() {
     confirmPassword: "",
   });
   const { token } = useSelector((state: RootState) => state.authDetail);
+
+  const errorMessages = useRef<string | null>(null)
 
   const dispatch = useDispatch();
 
@@ -27,7 +31,13 @@ export default function Auth() {
       return;
     const data = handleAuth(authCredential, authType);
     data.then((data) => {
-      dispatch(setAuthDetail({ username: data.username, token: data.token }));
+      if(data.token){
+        dispatch(setAuthDetail({ username: data.username, token: data.token }));
+      }
+      else{
+        errorMessages.current = data
+        setToast(true);
+      }
     });
   };
 
@@ -38,8 +48,18 @@ export default function Auth() {
     }
   }, [token]);
 
+  useEffect(() => {
+    const clearToast = setTimeout(() => {
+      setToast(false);
+    }, 3000);
+    return () => {
+      clearTimeout(clearToast);
+    };
+  }, [toast]);
+
   return (
     <div>
+      {<Toast show={toast} message={errorMessages.current} />}
       {authType === "login" ? (
         <Login
           updateAuthType={() => setAuthType("signup")}
