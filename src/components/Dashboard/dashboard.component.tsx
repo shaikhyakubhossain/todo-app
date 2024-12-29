@@ -4,10 +4,18 @@ import styles from "./dashboard.module.scss";
 import Task from "./Task/task.component";
 import type { taskType, currentTaskToDragType } from "../../utils/Types/local";
 
+import { RootState } from "@/lib/store";
+import { useSelector, useDispatch } from "react-redux";
+import { setSaveData } from "@/lib/features/SaveData/saveDataSlice";
+
 export default function Dashboard() {
   const [currentTaskToDrag, setCurrentTaskToDrag] = useState<currentTaskToDragType | null>(null);
   const [currentTaskToResize, setCurrentTaskToResize] = useState<HTMLDivElement | null>(null);
   const [tasks, setTasks] = useState<taskType[]>([]);
+
+  const { listMode } = useSelector((state: RootState) => state.viewMode);
+
+  const dispatch = useDispatch();
 
   const draggableAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,7 +31,7 @@ export default function Dashboard() {
   };
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
-    if ((event.target as HTMLDivElement).classList.contains("draggable")) {
+    if (listMode && (event.target as HTMLDivElement).classList.contains("draggable")) {
       // console.log((event.target as HTMLDivElement).parentElement as HTMLDivElement);
       const elemPos = (event.target as HTMLDivElement).getBoundingClientRect();
       event.currentTarget.style.userSelect = "none";
@@ -39,21 +47,11 @@ export default function Dashboard() {
 
   const stopDraggingOrCreateTask = (event: React.MouseEvent<HTMLDivElement>) => {
     if (
+      listMode &&
       !currentTaskToDrag &&
       event.target === draggableAreaRef.current
     ) {
-      setTasks([
-        ...tasks,
-        {
-          id: tasks.length === 0 ? 1 : tasks[tasks.length - 1].id + 1,
-          positionLeft: event.clientX - 10,
-          positionTop: event.clientY - 10,
-          width: 200,
-          height: 200,
-          title: "",
-          taskBody: "",
-        },
-      ]);
+      createNewTask(event.clientX, event.clientY);
     } else if((event.target as HTMLDivElement).classList.contains("draggable")) {
       event.currentTarget.style.userSelect = "auto";
       const taskIdToChangePos = Number(currentTaskToDrag?.elem.id.split("-")[1]);
@@ -70,6 +68,21 @@ export default function Dashboard() {
       setCurrentTaskToDrag(null);
     }
   };
+
+  const createNewTask = (localPositionLeft: number, localPositionTop: number) => {
+    setTasks([
+      ...tasks,
+      {
+        id: tasks.length === 0 ? 1 : tasks[tasks.length - 1].id + 1,
+        positionLeft: localPositionLeft - 10,
+        positionTop: localPositionTop - 10,
+        width: 200,
+        height: 200,
+        title: "",
+        taskBody: "",
+      },
+    ])
+  }
 
   const updateTitle = (taskId: number, title: string) => {
     setTasks((prev) => {
@@ -108,7 +121,9 @@ export default function Dashboard() {
   }, [currentTaskToResize]);
 
   useEffect(() => {
-    console.log(tasks)
+    console.log(tasks);
+    // const save = tasks;
+    // dispatch(setSaveData({ tasks: save }));
   }, [tasks]);
 
   const handleClickResize = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -141,16 +156,18 @@ export default function Dashboard() {
     <div
       ref={draggableAreaRef}
       className={`${styles.mainContainer} bg-[#423E37] h-[calc(100dvh-56px)]`}
+      style={{ padding: listMode ? "0" : "10px 10px" }}
       onMouseDown={selectTask}
       onMouseUp={stopDraggingOrCreateTask}
       onMouseMove={(event) => currentTaskToDrag && dragging(event)}
     >
-      { tasks.length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold !bg-[#423E37] text-[#918879] text-center">No tasks<br />Click anywhere to add one</div> }
+      { tasks.length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold !bg-[#423E37] text-[#918879] text-center">No tasks<br />{listMode ? <span>Click anywhere to add one</span> : <span>Click &quot;Add Task&quot; to add one</span>}</div> }
       { tasks.map((item) => {
         return (
           <Task
             key={item.id}
             taskId={item.id}
+            listMode={listMode}
             positionTop={item.positionTop}
             positionLeft={item.positionLeft}
             width={item.width}
@@ -165,6 +182,7 @@ export default function Dashboard() {
           />
         );
       })}
+      <div onClick={() => createNewTask(50, 100)} className=" flex-col items-center justify-center w-full h-10 font-semibold text-center cursor-pointer" style={{display: !listMode ? "flex" : "none"}}><div>Add Task</div></div>
     </div>
   );
 }

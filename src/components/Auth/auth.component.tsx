@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuthDetail } from "@/lib/features/AuthDetail/authDetailSlice";
 
 export default function Auth() {
-  const [toast, setToast] = useState(true);
+  const [toast, setToast] = useState(false);
   const [authType, setAuthType] = useState("signup");
   const [authCredential, setAuthCredential] = useState({
     username: "",
@@ -48,18 +48,9 @@ export default function Auth() {
     }
   }, [token]);
 
-  useEffect(() => {
-    const clearToast = setTimeout(() => {
-      setToast(false);
-    }, 3000);
-    return () => {
-      clearTimeout(clearToast);
-    };
-  }, [toast]);
-
   return (
     <div>
-      {<Toast show={toast} message={errorMessages.current} />}
+      {<Toast show={toast} message={errorMessages.current} hide={() => setToast(false)} />}
       {authType === "login" ? (
         <Login
           updateAuthType={() => setAuthType("signup")}

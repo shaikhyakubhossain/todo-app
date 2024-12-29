@@ -1,5 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authDetailSlice from "./features/AuthDetail/authDetailSlice";
+import saveDataSlice  from "./features/SaveData/saveDataSlice";
+import viewModeSlice from "./features/ViewMode/viewModeSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -9,7 +11,9 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    authDetail: authDetailSlice
+    authDetail: authDetailSlice,
+    saveData: saveDataSlice,
+    viewMode: viewModeSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
