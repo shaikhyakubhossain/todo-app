@@ -7,7 +7,8 @@ import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
     key: 'root',
-    storage
+    storage,
+    timeout: 100
 }
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
     reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

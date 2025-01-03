@@ -56,7 +56,7 @@ export default function Dashboard() {
       event.currentTarget.style.userSelect = "auto";
       const taskIdToChangePos = Number(currentTaskToDrag?.elem.id.split("-")[1]);
       setTasks((prev) => {
-        const newArr = prev;
+        const newArr = [...prev];
         newArr.forEach((item) => {
           if(item.id === taskIdToChangePos) {
             item.positionLeft = Number(currentTaskToDrag?.elem.style.left.split("px")[0]);
@@ -86,7 +86,7 @@ export default function Dashboard() {
 
   const updateTitle = (taskId: number, title: string) => {
     setTasks((prev) => {
-      const newArr = prev;
+      const newArr = [...prev];
       newArr.forEach((item) => {
         if(item.id === taskId) {
           item.title = title;
@@ -98,7 +98,7 @@ export default function Dashboard() {
 
   const updateTaskBody = (taskId: number, taskBody: string) => {
     setTasks((prev) => {
-      const newArr = prev;
+      const newArr = [...prev];
       newArr.forEach((item) => {
         if(item.id === taskId) {
           item.taskBody = taskBody;
@@ -121,9 +121,7 @@ export default function Dashboard() {
   }, [currentTaskToResize]);
 
   useEffect(() => {
-    console.log(tasks);
-    // const save = tasks;
-    // dispatch(setSaveData({ tasks: save }));
+    dispatch(setSaveData(tasks));
   }, [tasks]);
 
   const handleClickResize = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -140,7 +138,7 @@ export default function Dashboard() {
   const handleReleaseResize = () => {
     const taskIdToResize = Number(currentTaskToResize?.id.split("-")[1]);
     setTasks((prev) => {
-      const newArr = prev;
+      const newArr = [...prev];
       newArr.forEach((item) => {
         if(item.id === taskIdToResize) {
           item.width = Number(currentTaskToResize?.style.width.split("px")[0]);

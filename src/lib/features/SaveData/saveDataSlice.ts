@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { taskType } from "@/utils/Types/local";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { taskType } from "@/utils/Types/local";
 
 interface saveDataStateType {
     tasks: taskType[];
@@ -13,8 +13,8 @@ export const saveDataSlice = createSlice({
     name: "saveData",
     initialState,
     reducers: {
-        setSaveData: (state, action) => {
-            state.tasks = action.payload
+        setSaveData: (state, action: PayloadAction<taskType[]>) => {
+            state.tasks = [...action.payload]
         }
     },
 })
