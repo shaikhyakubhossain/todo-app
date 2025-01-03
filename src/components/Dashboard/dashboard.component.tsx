@@ -121,7 +121,7 @@ export default function Dashboard() {
   }, [currentTaskToResize]);
 
   useEffect(() => {
-    dispatch(setSaveData(tasks));
+    dispatch(setSaveData(tasks.map(task => ({ ...task }))));
   }, [tasks]);
 
   const handleClickResize = (event: React.MouseEvent<HTMLDivElement>) => {
