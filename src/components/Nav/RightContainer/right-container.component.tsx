@@ -10,7 +10,7 @@ import { toggleViewMode } from "@/lib/features/ViewMode/viewModeSlice";
 
 export default function RightContainer() {
     const [toggle, setToggle] = useState(false);
-    const { username } = useSelector((state: RootState) => state.authDetail);
+    const { username, token } = useSelector((state: RootState) => state.authDetail);
     const { tasks } = useSelector((state: RootState) => state.saveData);
 
     const dispatch = useDispatch();
@@ -24,7 +24,8 @@ export default function RightContainer() {
         const response = await fetch("http://localhost:4000/saveData", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                authorization: `Bearer ${token}`
             },
             body: JSON.stringify({ tasks })
         })
@@ -34,7 +35,7 @@ export default function RightContainer() {
 
     if(username) return (
         <div className="flex items-center space-x-4">
-            <Button >Save</Button>
+            <Button onClick={handleSave} >Save</Button>
             <Button onClick={() => dispatch(toggleViewMode())} >Change Mode</Button>
             <div onClick={() => setToggle(!toggle)} className="flex justify-center items-center w-10 h-10 rounded-full bg-slate-700 text-white text-2xl capitalize text-center cursor-pointer"><span>{username[0]}</span></div>
             <Dropdown handleLogout={handleLogout} toggle={toggle} />
