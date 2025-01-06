@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState<taskType[]>([]);
 
   const { listMode } = useSelector((state: RootState) => state.viewMode);
+  const { loadedTasks } = useSelector((state: RootState) => state.saveData);
 
   const dispatch = useDispatch();
 
@@ -123,6 +124,12 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(setSaveData(tasks.map(task => ({ ...task }))));
   }, [tasks]);
+
+  useEffect(() => {
+    if(loadedTasks && loadedTasks.length > 0) {
+      setTasks(loadedTasks.map(task => ({ ...task })));
+    }
+  }, [loadedTasks]);
 
   const handleClickResize = (event: React.MouseEvent<HTMLDivElement>) => {
     setCurrentTaskToResize((event.currentTarget as HTMLDivElement).parentElement as HTMLDivElement);
