@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Dropdown from "./Dropdown/dropdown.component";
 import Button from "@/components/Button/button.component";
+import Toast from "@/components/Toast/toast.component";
 
 import { RootState } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,9 @@ export default function RightContainer() {
     const [toggle, setToggle] = useState(false);
     const { username, token } = useSelector((state: RootState) => state.authDetail);
     const { savedTasks } = useSelector((state: RootState) => state.saveData);
+
+    const [toast, setToast] = useState<boolean>(false);
+    const serverMessageRef = useRef<string | null>(null);
 
     const dispatch = useDispatch();
 
@@ -31,7 +35,9 @@ export default function RightContainer() {
             body: JSON.stringify({ savedTasks })
         })
         const data = await response.json();
-        console.log(data);
+        serverMessageRef.current = data
+        setToast(true);
+        // console.log(data);
     }
 
     const handleLoad = async (): Promise<void> => {
@@ -43,11 +49,15 @@ export default function RightContainer() {
             }
         });
         const data = await response.json();
+        // console.log(data);
         dispatch(setLoadedData(data));
+        serverMessageRef.current = data.error ? data.error : "Data loaded successfully";
+        setToast(true);
     }
 
     if(username) return (
         <div className="flex items-center space-x-4">
+            <Toast show={toast} hide={() => setToast(!toast)} message={serverMessageRef.current} />
             <Button onClick={handleSave} >Save</Button>
             <Button onClick={handleLoad} >Load</Button>
             <Button onClick={() => dispatch(toggleViewMode())} >Change Mode</Button>
