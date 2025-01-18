@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Signup from "./Signup/signup.component";
 import Login from "./Login/login.component";
 import Toast from "../Toast/toast.component";
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuthDetail } from "@/lib/features/AuthDetail/authDetailSlice";
 
 export default function Auth() {
-  const [toast, setToast] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: "" });
   const [authType, setAuthType] = useState("signup");
   const [authCredential, setAuthCredential] = useState({
     username: "",
@@ -18,8 +18,6 @@ export default function Auth() {
     confirmPassword: "",
   });
   const { token } = useSelector((state: RootState) => state.authDetail);
-
-  const errorMessages = useRef<string | null>(null)
 
   const dispatch = useDispatch();
 
@@ -35,8 +33,7 @@ export default function Auth() {
         dispatch(setAuthDetail({ username: data.username, token: data.token }));
       }
       else{
-        errorMessages.current = data
-        setToast(true);
+        setToast({ show: true, message: data.error });
       }
     });
   };
@@ -50,7 +47,7 @@ export default function Auth() {
 
   return (
     <div>
-      {<Toast show={toast} message={errorMessages.current} hide={() => setToast(false)} />}
+      {<Toast show={toast.show} message={toast.message} hide={() => setToast({ show: false, message: "" })} />}
       {authType === "login" ? (
         <Login
           updateAuthType={() => setAuthType("signup")}

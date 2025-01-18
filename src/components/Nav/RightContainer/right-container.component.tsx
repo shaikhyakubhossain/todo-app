@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Dropdown from "./Dropdown/dropdown.component";
 import Button from "@/components/Button/button.component";
 import Toast from "@/components/Toast/toast.component";
@@ -15,8 +15,7 @@ export default function RightContainer() {
     const { username, token } = useSelector((state: RootState) => state.authDetail);
     const { savedTasks } = useSelector((state: RootState) => state.saveData);
 
-    const [toast, setToast] = useState<boolean>(false);
-    const serverMessageRef = useRef<string | null>(null);
+    const [toast, setToast] = useState({ show: false, message: "" });
 
     const dispatch = useDispatch();
 
@@ -35,8 +34,7 @@ export default function RightContainer() {
             body: JSON.stringify({ savedTasks })
         })
         const data = await response.json();
-        serverMessageRef.current = data
-        setToast(true);
+        setToast({ show: true, message: data });
         // console.log(data);
     }
 
@@ -51,13 +49,12 @@ export default function RightContainer() {
         const data = await response.json();
         // console.log(data);
         dispatch(setLoadedData(data));
-        serverMessageRef.current = data.error ? data.error : "Data loaded successfully";
-        setToast(true);
+        setToast({ show: true, message: data.error ? data.error : "Data Loaded" });
     }
 
     if(username) return (
         <div className="flex items-center space-x-4">
-            <Toast show={toast} hide={() => setToast(!toast)} message={serverMessageRef.current} />
+            {<Toast show={toast.show} message={toast.message} hide={() => setToast({ show: false, message: "" })} />}
             <Button onClick={handleSave} >Save</Button>
             <Button onClick={handleLoad} >Load</Button>
             <Button onClick={() => dispatch(toggleViewMode())} >Change Mode</Button>
