@@ -25,7 +25,7 @@ export default function RightContainer() {
     }
 
     const handleSave = async (): Promise<void> => {
-        const response = await fetch("http://localhost:4000/saveData", {
+        const response = await fetch("https://todo-app-backend-five-dusky.vercel.app/saveData", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function RightContainer() {
     }
 
     const handleLoad = async (): Promise<void> => {
-        const response = await fetch("http://localhost:4000/loadData", {
+        const response = await fetch("https://todo-app-backend-five-dusky.vercel.app/loadData", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

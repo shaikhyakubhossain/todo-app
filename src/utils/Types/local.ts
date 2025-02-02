@@ -30,3 +30,8 @@ export type authComponentType = {
   updateConfirmPassword?: (confirmPassword: string) => void;
   submit: () => void;
 };
+
+export type toastType = {
+  show: boolean;
+  message: string;
+}
