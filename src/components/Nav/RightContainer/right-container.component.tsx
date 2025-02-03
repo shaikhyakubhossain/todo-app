@@ -3,6 +3,7 @@ import { useState } from "react";
 import Dropdown from "./Dropdown/dropdown.component";
 import Button from "@/components/Button/button.component";
 import Toast from "@/components/Toast/toast.component";
+import { getUrl } from "@/utils/Helper/urls";
 
 import { RootState } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +26,7 @@ export default function RightContainer() {
     }
 
     const handleSave = async (): Promise<void> => {
-        const response = await fetch("https://todo-app-backend-five-dusky.vercel.app/saveData", {
+        const response = await fetch(`${getUrl()}/saveData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -39,7 +40,7 @@ export default function RightContainer() {
     }
 
     const handleLoad = async (): Promise<void> => {
-        const response = await fetch("https://todo-app-backend-five-dusky.vercel.app/loadData", {
+        const response = await fetch(`${getUrl()}/loadData`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

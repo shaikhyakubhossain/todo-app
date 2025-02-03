@@ -33,7 +33,7 @@ export default function Auth() {
         dispatch(setAuthDetail({ username: data.username, token: data.token }));
       }
       else{
-        setToast({ show: true, message: data.error });
+        setToast({ show: true, message: data });
       }
     });
   };
