@@ -157,6 +157,8 @@ export default function Dashboard() {
     setCurrentTaskToResize(null);
   };
 
+  console.log("here", loadedTasks)
+
   return (
     <div
       ref={draggableAreaRef}
@@ -187,7 +189,7 @@ export default function Dashboard() {
           />
         );
       })}
-      <div onClick={() => createNewTask(50, 100)} className=" flex-col items-center justify-center w-full h-10 font-semibold text-center cursor-pointer" style={{display: !listMode ? "flex" : "none"}}><div>Add Task</div></div>
+      <div onClick={() => createNewTask(50, 100)} className=" flex-col items-center justify-center !bg-gray-400 hover:!bg-gray-600 hover:!text-white w-full h-10 font-semibold text-center cursor-pointer" style={{display: !listMode ? "flex" : "none"}}><div>Add Task</div></div>
     </div>
   );
 }
