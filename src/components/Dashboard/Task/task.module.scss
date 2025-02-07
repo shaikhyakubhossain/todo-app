@@ -3,7 +3,8 @@
         display: block;
         padding: 2px;
         border-radius: 4px;
-        background: #6E675F;
+        background: #6E675F30;
+        outline: none;
     }
     input::placeholder, textarea::placeholder {
         color: white;

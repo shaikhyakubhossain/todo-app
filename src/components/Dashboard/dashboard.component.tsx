@@ -8,6 +8,8 @@ import { RootState } from "@/lib/store";
 import { useSelector, useDispatch } from "react-redux";
 import { setSaveData } from "@/lib/features/SaveData/saveDataSlice";
 
+let previousTask: HTMLDivElement | null = null;
+
 export default function Dashboard() {
   const [currentTaskToDrag, setCurrentTaskToDrag] = useState<currentTaskToDragType | null>(null);
   const [currentTaskToResize, setCurrentTaskToResize] = useState<HTMLDivElement | null>(null);
@@ -32,12 +34,17 @@ export default function Dashboard() {
   };
 
   const selectTask = (event: React.MouseEvent<HTMLDivElement>) => {
+    const currentTaskDragging = (event.target as HTMLDivElement).parentElement;
     if (listMode && (event.target as HTMLDivElement).classList.contains("draggable")) {
       // console.log((event.target as HTMLDivElement).parentElement as HTMLDivElement);
       const elemPos = (event.target as HTMLDivElement).getBoundingClientRect();
       event.currentTarget.style.userSelect = "none";
+      console.log(currentTaskDragging);
+      if(previousTask) previousTask.style.zIndex = "10";
+      if(currentTaskDragging) currentTaskDragging.style.zIndex = "50";
+      console.log(currentTaskDragging);
       setCurrentTaskToDrag({
-        elem: (event.target as HTMLDivElement).parentElement as HTMLDivElement,
+        elem: currentTaskDragging as HTMLDivElement,
         selectPosition: {
           x: event.clientX - elemPos.x,
           y: event.clientY - elemPos.y,
@@ -54,7 +61,9 @@ export default function Dashboard() {
     ) {
       createNewTask(event.clientX, event.clientY);
     } else if((event.target as HTMLDivElement).classList.contains("draggable")) {
+      previousTask = (event.target as HTMLDivElement).parentElement as HTMLDivElement;
       event.currentTarget.style.userSelect = "auto";
+      console.log("previous", (event.target as HTMLDivElement).parentElement);
       const taskIdToChangePos = Number(currentTaskToDrag?.elem.id.split("-")[1]);
       setTasks((prev) => {
         const newArr = [...prev];
