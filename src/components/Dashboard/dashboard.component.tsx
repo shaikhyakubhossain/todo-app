@@ -171,7 +171,7 @@ export default function Dashboard() {
   return (
     <div
       ref={draggableAreaRef}
-      className={`${styles.mainContainer} bg-[#423E37] h-[calc(100dvh-56px)]`}
+      className={`${styles.mainContainer} bg-[#423E37] h-[calc(100dvh-56px)] overflow-auto`}
       style={{ padding: listMode ? "0" : "10px 10px" }}
       onMouseDown={selectTask}
       onMouseUp={stopDraggingOrCreateTask}
